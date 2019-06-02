@@ -20,5 +20,5 @@ module.exports = {
   },
   makePanel: function(window) {
     return NativeExtension.MakePanel(window.getNativeWindowHandle());
-  }
-}
+  },
+};

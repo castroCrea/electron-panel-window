@@ -1,5 +1,3 @@
-[![npm version](https://badge.fury.io/js/electron-panel-window.svg)](https://badge.fury.io/js/electron-panel-window) [![CircleCI](https://circleci.com/gh/goabstract/electron-panel-window.svg?style=svg)](https://circleci.com/gh/goabstract/electron-panel-window)
-
 # electron-panel-window
 
 Enables creating a browser window in Electron that behaves like a [Panel](https://developer.apple.com/documentation/appkit/nspanel). Panels are typically used for auxillary windows and do not activate the application – as such they can appear ontop of other apps in the same way as Spotlight or 1Password, for example.
@@ -14,8 +12,8 @@ import { PanelWindow } from 'electron-panel-window';
 const win = new PanelWindow({
   width: 800,
   height: 600,
-  show: false
-})
+  show: false,
+});
 
 // the window will show without activating the application
 win.show();
@@ -38,7 +36,7 @@ makeKeyWindow(currentWindow);
 
 ## Development
 
-To compile the extension for the first time, run 
+To compile the extension for the first time, run
 
 ```bash
 $ yarn
@@ -54,7 +52,7 @@ $ yarn test
 
 ## Contributing
 
-This project is maintained by [Abstract](https://www.goabstract.com). We are very willing to accept contributions, first please ensure there is a relavant [issue in the tracker](https://github.com/goabstract/electron-panel-window/issues) and an approach has been discussed before beginning to write code – this makes it more likely we will be able to accept your contribution and ensure nobody's time (especially yours!) is wasted.
+This project is built on top of [Abstract](https://www.goabstract.com)'s work.
 
 ## Details
 
@@ -68,5 +66,4 @@ File | Contents
 ## License
 
 This project is under MIT.
-See [LICENSE](https://github.com/goabstract/electron-panel-window/blob/master/LICENSE)
-
+See [LICENSE](https://github.com/qazbnm456/electron-panel-window/blob/master/LICENSE)
