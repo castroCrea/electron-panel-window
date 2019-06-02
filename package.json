@@ -6,8 +6,8 @@
   "main": "index.js",
   "scripts": {
     "configure": "node-gyp configure",
-    "prepare": "node-gyp build",
     "build": "node-gyp rebuild --release --target=5.0.2 --arch=x64 --dist-url=https://electronjs.org/headers",
+    "install": "npm run configure && npm run build",
     "test": "mocha"
   },
   "devDependencies": {

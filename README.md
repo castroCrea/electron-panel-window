@@ -40,8 +40,7 @@ To compile the extension for the first time, run
 
 ```bash
 $ yarn
-$ yarn configure
-$ yarn build
+$ yarn install
 ```
 
 All subsequent builds only need `yarn build`. Tests run in Spectron:
