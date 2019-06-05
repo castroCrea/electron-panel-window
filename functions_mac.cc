@@ -35,26 +35,30 @@ NAN_METHOD(MakePanel) {
 
   // Ensure that the window is a "non activating panel" which means it won't activate the application
   // when it becomes key.
-  window.styleMask |= NSWindowStyleMaskNonactivatingPanel;
-  window.styleMask |= NSWindowStyleMaskFullSizeContentView;
-
-
-  // Ensure that the window can display over the top of fullscreen apps
-  [window setCollectionBehavior: NSWindowCollectionBehaviorTransient | NSWindowCollectionBehaviorMoveToActiveSpace | NSWindowCollectionBehaviorFullScreenAuxiliary ];
-  [window setLevel:NSFloatingWindowLevel];
-  [window setFloatingPanel:YES];
+  window.styleMask = NSWindowStyleMaskNonactivatingPanel;
+  if (@available(macOS 10.14, *)) {
+    window.styleMask |= NSWindowStyleMaskFullSizeContentView |
+                        NSWindowStyleMaskTitled |
+                        NSWindowStyleMaskClosable |
+                        NSWindowStyleMaskMiniaturizable |
+                        NSWindowStyleMaskResizable;
+  } else {
+    window.styleMask |= NSWindowStyleMaskBorderless | NSWindowStyleMaskResizable;
+  }
 
   // Hide the traffic light controls
   [[window standardWindowButton:NSWindowCloseButton] setHidden:YES];
   [[window standardWindowButton:NSWindowMiniaturizeButton] setHidden:YES];
   [[window standardWindowButton:NSWindowZoomButton] setHidden:YES];
 
-  // Don't show title bar.
+  // Hide the titlebar
   [window setTitlebarAppearsTransparent:YES];
   [window setTitleVisibility:NSWindowTitleHidden];
 
-  // Remove non-transparent corners, see http://git.io/vfonD.
-  [window setOpaque:NO];
+  // Ensure that the window can display over the top of fullscreen apps
+  [window setCollectionBehavior: NSWindowCollectionBehaviorTransient | NSWindowCollectionBehaviorMoveToActiveSpace | NSWindowCollectionBehaviorFullScreenAuxiliary ];
+  [window setLevel:NSFloatingWindowLevel];
+  [window setFloatingPanel:YES];
 
   return info.GetReturnValue().Set(true);
 }
