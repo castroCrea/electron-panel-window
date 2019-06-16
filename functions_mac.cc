@@ -6,24 +6,13 @@
 #include "functions.h"
 
 @interface MyDelegate : NSObject { }
--(BOOL) windowShouldClose:(id)window;
+-(BOOL) windowShouldClose:(NSPanel*)window;
 @end
 
 @implementation MyDelegate
--(BOOL) windowShouldClose:(NSWindow*)window {
-  NSAlert* alert = [[NSAlert alloc] init];
-  [alert setAlertStyle:NSInformationalAlertStyle];
-  [alert setMessageText:@"Are you sure you want to quit?"];
-  [alert addButtonWithTitle:@"Yes"];
-  [alert addButtonWithTitle:@"No"];
-  NSInteger result = [alert runModal];
-  if (result == NSAlertFirstButtonReturn)
-  {
-      [alert release];
-      return YES;
-  }
-  [alert release];
-  return NO;
+-(BOOL) windowShouldClose:(NSPanel*)window {
+  [window performClose:self];
+  return YES;
 }
 @end
 
@@ -102,6 +91,7 @@ napi_value MakePanel(napi_env env, napi_callback_info info) {
   // Ensure that the window can display over the top of fullscreen apps
   [window setCollectionBehavior: NSWindowCollectionBehaviorTransient | NSWindowCollectionBehaviorMoveToActiveSpace | NSWindowCollectionBehaviorFullScreenAuxiliary ];
   [window setLevel:NSFloatingWindowLevel];
+  [window setFloatingPanel:YES];
 
   status = napi_close_handle_scope(env, scope);
   if (status != napi_ok) {
