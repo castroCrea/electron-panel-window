@@ -1,9 +1,9 @@
 #ifndef NATIVE_EXTENSION_GRAB_H
 #define NATIVE_EXTENSION_GRAB_H
 
-#include <nan.h>
+#include <node_api.h>
 
-NAN_METHOD(MakePanel);
-NAN_METHOD(MakeKeyWindow);
+napi_value MakePanel(napi_env, napi_callback_info);
+napi_value MakeKeyWindow(napi_env, napi_callback_info);
 
 #endif

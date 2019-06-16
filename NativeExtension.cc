@@ -1,17 +1,22 @@
 #include "functions.h"
 
-using v8::FunctionTemplate;
-
 // NativeExtension.cc represents the top level of the module.
 // C++ constructs that are exposed to javascript are exported here
 
-NAN_MODULE_INIT(InitAll) {
-  Nan::Set(target, Nan::New("MakePanel").ToLocalChecked(),
-    Nan::GetFunction(Nan::New<FunctionTemplate>(MakePanel)).ToLocalChecked());
-  Nan::Set(target, Nan::New("MakeKeyWindow").ToLocalChecked(),
-    Nan::GetFunction(Nan::New<FunctionTemplate>(MakeKeyWindow)).ToLocalChecked());
-  // Passing target down to the next NAN_MODULE_INIT
-  // MyObject::Init(target);
+#define DECLARE_NAPI_METHOD(name, func)                          \
+  { name, 0, func, 0, 0, 0, napi_default, 0 }
+
+napi_value Init(napi_env env, napi_value exports) {
+    napi_status status;
+
+    napi_property_descriptor descriptors[] = {
+      DECLARE_NAPI_METHOD("MakePanel", MakePanel),
+      DECLARE_NAPI_METHOD("MakeKeyWindow", MakeKeyWindow)
+    };
+
+    status = napi_define_properties(env, exports, 2, descriptors);
+    if (status != napi_ok) return NULL;
+    return exports;
 }
 
-NODE_MODULE(NativeExtension, InitAll)
+NAPI_MODULE(NativeExtension, Init)

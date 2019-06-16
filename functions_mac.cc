@@ -5,33 +5,77 @@
 
 #include "functions.h"
 
-@interface PROPanel : NSPanel
+@interface MyDelegate : NSObject { }
+-(BOOL) windowShouldClose:(id)window;
 @end
 
-@implementation PROPanel
+@implementation MyDelegate
+-(BOOL) windowShouldClose:(NSWindow*)window {
+  NSAlert* alert = [[NSAlert alloc] init];
+  [alert setAlertStyle:NSInformationalAlertStyle];
+  [alert setMessageText:@"Are you sure you want to quit?"];
+  [alert addButtonWithTitle:@"Yes"];
+  [alert addButtonWithTitle:@"No"];
+  NSInteger result = [alert runModal];
+  if (result == NSAlertFirstButtonReturn)
+  {
+      [alert release];
+      return YES;
+  }
+  [alert release];
+  return NO;
+}
+@end
+
+@interface Panel : NSPanel
+@end
+
+@implementation Panel
 - (BOOL)needsPanelToBecomeKey {
   return YES;
 }
 - (BOOL)acceptsFirstResponder {
   return YES;
 }
+- (BOOL)isReleasedWhenClosed {
+  return YES;
+}
 @end
 
-NAN_METHOD(MakePanel) {
-  v8::Local<v8::Object> handleBuffer = info[0].As<v8::Object>();
-  v8::Isolate* isolate = info.GetIsolate();
-  v8::HandleScope scope(isolate);
+napi_value MakePanel(napi_env env, napi_callback_info info) {
+  napi_status status;
+  size_t argc = 1;
+  napi_value handleBuffer[1];
 
-  char* buffer = node::Buffer::Data(handleBuffer);
+  status = napi_get_cb_info(env, info, &argc, handleBuffer, 0, 0);
+  if(status != napi_ok || argc < 1) {
+    napi_throw_type_error(env, NULL, "Wrong number of arguments");
+    return 0;
+  }
+
+  napi_handle_scope scope;
+  status = napi_open_handle_scope(env, &scope);
+  if (status != napi_ok) {
+    return 0;
+  }
+
+  void* buffer;
+  size_t bufferLength;
+  status = napi_get_buffer_info(env, handleBuffer[0], &buffer, &bufferLength);
+  if (status != napi_ok) {
+    return handleBuffer[0];
+  }
   NSView* mainContentView = *reinterpret_cast<NSView**>(buffer);
-
   if (!mainContentView)
-      return info.GetReturnValue().Set(false);
+    return handleBuffer[0];
 
   NSWindow* window = mainContentView.window;
 
+  MyDelegate* myDelegate = [[MyDelegate alloc] init];
+  [window setDelegate:myDelegate];
+
   // Convert the NSWindow class to NSPanel
-  object_setClass(window, [PROPanel class]);
+  object_setClass(window, [Panel class]);
 
   // Ensure that the window is a "non activating panel" which means it won't activate the application
   // when it becomes key.
@@ -58,22 +102,49 @@ NAN_METHOD(MakePanel) {
   // Ensure that the window can display over the top of fullscreen apps
   [window setCollectionBehavior: NSWindowCollectionBehaviorTransient | NSWindowCollectionBehaviorMoveToActiveSpace | NSWindowCollectionBehaviorFullScreenAuxiliary ];
   [window setLevel:NSFloatingWindowLevel];
-  [window setFloatingPanel:YES];
 
-  return info.GetReturnValue().Set(true);
+  status = napi_close_handle_scope(env, scope);
+  if (status != napi_ok) {
+    return 0;
+  }
+
+  return handleBuffer[0];
 }
 
-NAN_METHOD(MakeKeyWindow) {
-  v8::Local<v8::Object> handleBuffer = info[0].As<v8::Object>();
-  v8::Isolate* isolate = info.GetIsolate();
-  v8::HandleScope scope(isolate);
+napi_value MakeKeyWindow(napi_env env, napi_callback_info info) {
+  napi_status status;
+  size_t argc = 1;
+  napi_value handleBuffer[1];
 
-  char* buffer = node::Buffer::Data(handleBuffer);
+  status = napi_get_cb_info(env, info, &argc, handleBuffer, 0, 0);
+  if(status != napi_ok || argc < 1) {
+    napi_throw_type_error(env, NULL, "Wrong number of arguments");
+    return 0;
+  }
+
+  napi_handle_scope scope;
+  status = napi_open_handle_scope(env, &scope);
+  if (status != napi_ok) {
+    return 0;
+  }
+
+  void* buffer;
+  size_t bufferLength;
+  status = napi_get_buffer_info(env, handleBuffer[0], &buffer, &bufferLength);
+  if (status != napi_ok) {
+    return handleBuffer[0];
+  }
   NSView* mainContentView = *reinterpret_cast<NSView**>(buffer);
 
   if (!mainContentView)
-      return info.GetReturnValue().Set(false);
+    return handleBuffer[0];
 
   [mainContentView.window makeKeyWindow];
-  return info.GetReturnValue().Set(true);
+  
+  status = napi_close_handle_scope(env, scope);
+  if (status != napi_ok) {
+    return 0;
+  }
+
+  return handleBuffer[0];
 }

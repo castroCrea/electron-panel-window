@@ -6,8 +6,8 @@ var mainWindow = null;
 app.on('ready', function () {
   mainWindow = new PanelWindow({
     center: true,
-    width: 1400,
-    height: 900,
+    width: 800,
+    height: 600,
     minHeight: 100,
     minWidth: 100,
     show: false,
