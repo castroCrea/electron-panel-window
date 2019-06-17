@@ -6,12 +6,12 @@
   "main": "index.js",
   "scripts": {
     "configure": "node-gyp configure",
-    "build": "node-gyp rebuild --release --target=5.0.3 --arch=x64 --dist-url=https://electronjs.org/headers",
+    "build": "node-gyp rebuild --release --target=5.0.4 --arch=x64 --dist-url=https://electronjs.org/headers",
     "install": "npm run configure && npm run build",
     "test": "mocha"
   },
   "devDependencies": {
-    "electron": "^5.0.3",
+    "electron": "^5.0.4",
     "mocha": "^6.1.4",
     "node-gyp": "^5.0.0",
     "spectron": "^5.0.0"

@@ -49,6 +49,18 @@ All subsequent builds only need `yarn build`. Tests run in Spectron:
 $ yarn test
 ```
 
+## Debugging steps
+
+1. After bumping into an error, you're supposed to see something like:
+    ```
+    0   com.github.Electron.framework 	0x000000010a0c976f 0x107e9e000 + 35829615
+    ```
+2. Download `dSYM` from https://github.com/electron/electron/releases, launch `atos` like: `xcrun atos -o "Electron Framework.dSYM/Contents/Resources/DWARF/Electron Framework" -l 0x10a620000 -arch x86_64`, and type `0x000000010c84b76f`
+3. You should see the line triggering the error:
+    ```
+    -[AtomNSWindowDelegate windowWillClose:] (in Electron Framework) (atom_ns_window_delegate.mm:248)
+    ```
+
 ## Contributing
 
 This project is built on top of [Abstract](https://www.goabstract.com)'s work.

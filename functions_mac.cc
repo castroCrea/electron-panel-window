@@ -6,12 +6,12 @@
 #include "functions.h"
 
 @interface MyDelegate : NSObject { }
--(BOOL) windowShouldClose:(NSPanel*)window;
+-(BOOL) windowShouldClose:(id)sender;
 @end
 
 @implementation MyDelegate
--(BOOL) windowShouldClose:(NSPanel*)window {
-  [window performClose:self];
+-(BOOL) windowShouldClose:(NSPanel*)sender {
+  [sender performClose:nil];
   return YES;
 }
 @end
@@ -24,9 +24,6 @@
   return YES;
 }
 - (BOOL)acceptsFirstResponder {
-  return YES;
-}
-- (BOOL)isReleasedWhenClosed {
   return YES;
 }
 @end
@@ -60,8 +57,8 @@ napi_value MakePanel(napi_env env, napi_callback_info info) {
 
   NSWindow* window = mainContentView.window;
 
-  MyDelegate* myDelegate = [[MyDelegate alloc] init];
-  [window setDelegate:myDelegate];
+  // MyDelegate* myDelegate = [[MyDelegate alloc] init];
+  // [window setDelegate:myDelegate];
 
   // Convert the NSWindow class to NSPanel
   object_setClass(window, [Panel class]);
