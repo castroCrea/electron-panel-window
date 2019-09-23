@@ -1,17 +1,17 @@
 {
   "name": "electron-panel-window",
   "description": "Create Electron BrowserWindow's that act like Panels",
-  "version": "2.0.2",
+  "version": "2.0.3",
   "author": "boik <boik@tdohacker.org>",
   "main": "index.js",
   "scripts": {
     "configure": "node-gyp configure",
-    "build": "node-gyp rebuild --release --target=6.0.9 --arch=x64 --dist-url=https://electronjs.org/headers",
+    "build": "node-gyp rebuild --release --target=6.0.10 --arch=x64 --dist-url=https://electronjs.org/headers",
     "install": "npm run configure && npm run build",
     "test": "mocha"
   },
   "devDependencies": {
-    "electron": "^6.0.9",
+    "electron": "^6.0.10",
     "mocha": "^6.2.0",
     "node-gyp": "^5.0.3",
     "spectron": "^5.0.0"
