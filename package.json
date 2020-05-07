@@ -1,7 +1,7 @@
 {
-  "name": "electron-panel-window",
+  "name": "@castrocrea/electron-panel-window",
   "description": "Create Electron BrowserWindow's that act like Panels",
-  "version": "3.0.0",
+  "version": "3.0.2",
   "author": "boik <boik@tdohacker.org>",
   "main": "index.js",
   "scripts": {
@@ -11,8 +11,8 @@
     "test": "mocha"
   },
   "devDependencies": {
-    "electron": "^7.0.0",
-    "mocha": "^6.2.2",
+    "electron": "^9.0.0-beta.22",
+    "mocha": "^7.1.2",
     "node-gyp": "^6.0.0",
     "spectron": "^5.0.0"
   },
@@ -21,9 +21,9 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/qazbnm456/electron-panel-window"
+    "url": "git+https://github.com/castroCrea/electron-panel-window"
   },
   "bugs": {
-    "url": "https://github.com/qazbnm456/electron-panel-window/issues"
+    "url": "https://github.com/castroCrea/electron-panel-window/issues"
   }
 }
