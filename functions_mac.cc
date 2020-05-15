@@ -10,9 +10,20 @@
 @end
 
 @implementation MyDelegate
--(BOOL) windowShouldClose:(NSPanel*)sender {
-  [sender performClose:nil];
-  return YES;
+-(BOOL) windowShouldClose:(NSWindow*)window {
+  NSAlert* alert = [[NSAlert alloc] init];
+  [alert setAlertStyle:NSInformationalAlertStyle];
+  [alert setMessageText:@"Are you sure you want to quit?"];
+  [alert addButtonWithTitle:@"Yes"];
+  [alert addButtonWithTitle:@"No"];
+  NSInteger result = [alert runModal];
+  if (result == NSAlertFirstButtonReturn)
+  {
+      [alert release];
+      return YES;
+  }
+  [alert release];
+  return NO;
 }
 @end
 
